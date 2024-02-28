@@ -1,10 +1,7 @@
-package se.lexicon.g48todoapi.model;
+package se.lexicon.g48todoapi.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +10,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "roles")
+@EqualsAndHashCode(exclude = "roles")
 
 @Entity
 public class User {
