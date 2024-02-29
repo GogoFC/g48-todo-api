@@ -13,6 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"tasks", "user"})
+@Builder
 
 
 @Entity

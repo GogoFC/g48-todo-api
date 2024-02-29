@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "person")
 @ToString(exclude = "person")
+@Builder
 
 @Entity
 public class Task {
