@@ -1,5 +1,6 @@
 package se.lexicon.g48todoapi.domain.dto;
 
+
 import lombok.*;
 
 @Getter
@@ -8,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 
-public class RoleDTOView {
+public class RoleDTOForm {
     private Long id;
     private String name;
 }

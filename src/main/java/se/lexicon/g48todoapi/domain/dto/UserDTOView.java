@@ -2,13 +2,15 @@ package se.lexicon.g48todoapi.domain.dto;
 
 import lombok.*;
 
-@Getter
+import java.util.Set;
+
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 
-public class RoleDTOView {
-    private Long id;
-    private String name;
+public class UserDTOView {
+    private String email;
+    private Set<RoleDTOView> roles;
 }
