@@ -1,5 +1,6 @@
 package se.lexicon.g48todoapi.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,6 +98,7 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Transactional
     @Override
     public void disableByEmail(String email) {
         if (!userRepository.existsByEmail(email)) throw new DataNotFoundException("Email does not exist.");
@@ -104,6 +106,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
     @Override
     public void enableByEmail(String email) {
         if (!userRepository.existsByEmail(email)) throw new DataNotFoundException("Email does not exist.");
