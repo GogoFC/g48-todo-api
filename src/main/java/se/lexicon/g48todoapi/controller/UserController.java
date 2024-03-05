@@ -8,6 +8,8 @@ import se.lexicon.g48todoapi.domain.dto.UserDTOForm;
 import se.lexicon.g48todoapi.domain.dto.UserDTOView;
 import se.lexicon.g48todoapi.service.UserService;
 
+// TODO: In Postman application, create POST-requests based on this API, to seed the application with some users.
+
 @RequestMapping("/api/v1/users") // http://localhost:8080/api/v1/users
 @RestController // RestController annotation is used to create a RESTful web service
 public class UserController {
