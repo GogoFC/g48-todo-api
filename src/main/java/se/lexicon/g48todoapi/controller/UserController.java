@@ -1,5 +1,6 @@
 package se.lexicon.g48todoapi.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserDTOView> doRegister(@RequestBody UserDTOForm userDTOForm){
+    public ResponseEntity<UserDTOView> doRegister(@RequestBody @Valid UserDTOForm userDTOForm){
 
         System.out.println(" >>>>>>>> doRegister Method Executed");
         System.out.println("userDTOForm = " + userDTOForm);
