@@ -2,6 +2,7 @@ package se.lexicon.g48todoapi.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.lexicon.g48todoapi.domain.dto.RoleDTOView;
@@ -11,6 +12,7 @@ import se.lexicon.g48todoapi.domain.entity.Role;
 import se.lexicon.g48todoapi.domain.entity.User;
 import se.lexicon.g48todoapi.exception.DataDuplicateException;
 import se.lexicon.g48todoapi.exception.DataNotFoundException;
+import se.lexicon.g48todoapi.exception.EmailServiceFailedException;
 import se.lexicon.g48todoapi.repository.RoleRepository;
 import se.lexicon.g48todoapi.repository.UserRepository;
 
@@ -22,12 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -69,6 +73,15 @@ public class UserServiceImpl implements UserService {
                                 .build())
                 .collect(Collectors.toSet());
 
+
+        //TODO: Send a Welcome Email When registered USER ✅
+        HttpStatusCode emailStatus = emailService.sendRegistrationEmail(userDTOForm.getEmail());
+
+        //4. Validate Response
+        if (!emailStatus.is2xxSuccessful()){
+            System.out.println("was not 200!");
+            throw new EmailServiceFailedException("Email was not sent successfully.");
+        }
 
         return UserDTOView.builder()
                 .email(savedUser.getEmail())
