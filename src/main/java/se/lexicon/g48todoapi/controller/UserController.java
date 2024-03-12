@@ -44,17 +44,13 @@ public class UserController {
     }
 
 
-    @PutMapping("/disable")
-    public ResponseEntity<Void> doDisableUserByEmail(@RequestParam String email){
-        userService.disableByEmail(email);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @PutMapping("/enable")
-    public ResponseEntity<Void> doEnableUserByEmail(@RequestParam String email){
-        userService.enableByEmail(email);
-
+    @PutMapping("/")
+    public ResponseEntity<Void> doDisableUserByEmail(@RequestParam("email") String email, @RequestParam("expired") boolean expired){
+        if (expired){
+            userService.disableByEmail(email);
+        } else {
+            userService.enableByEmail(email);
+        }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

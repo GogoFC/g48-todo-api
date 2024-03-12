@@ -11,43 +11,45 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
 
+
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-        StringBuilder errorDetails = new StringBuilder();
+        Map<String, String> errorDetails = new HashMap<>();
 
-        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            errorDetails.append(fieldError.getField());
-            errorDetails.append(": ");
-            errorDetails.append(fieldError.getDefaultMessage());
-            errorDetails.append(", ");
-        });
+        ex.getBindingResult().getFieldErrors()
+                .forEach(fieldError -> errorDetails.put(fieldError.getField(), fieldError.getDefaultMessage())
+        );
 
-        DTOError dtoError = DTOError.builder()
-                .status(status.value())
+        ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .statusText(errorDetails.toString())
+                .status(status.value())
+                .error(HttpStatus.valueOf(status.value()).toString())
+                .violations(errorDetails)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dtoError);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 
     }
 
     @ExceptionHandler({DataNotFoundException.class, DataDuplicateException.class})
-    public ResponseEntity<DTOError> handleDataNotFoundException(DataNotFoundException ex){
+    public ResponseEntity<Object> handleDataNotFoundException(DataNotFoundException ex, HttpStatusCode status){
 
-        DTOError dtoError = DTOError.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
+        ApiError apiError = ApiError.builder()
                 .timestamp(LocalDateTime.now())
-                .statusText(ex.getMessage())
+                .status(status.value())
+                .error(HttpStatus.valueOf(status.value()).toString())
                 .build();
 
-        return ResponseEntity.badRequest().body(dtoError);
+        return ResponseEntity.badRequest().body(apiError);
     }
 
 }
