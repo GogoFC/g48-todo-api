@@ -15,6 +15,7 @@ import java.util.Set;
 @Builder
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -26,7 +27,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "users-roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
