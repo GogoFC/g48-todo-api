@@ -10,7 +10,9 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
-    //Find people who have no tasks
+    /**
+     *     Find people who have no tasks
+     */
     @Query("select p from Person p where size(p.tasks) = 0 ")
     List<Person> findIdlePeople();
 }
